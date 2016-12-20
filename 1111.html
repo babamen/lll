@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>DOM表格操作</title>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+				box-sizing: border-box;
+			}
+		
+		
+			table {
+				width: 800px;
+				margin: 0 auto;
+				border: 1px solid #c7d7ee;
+			}
+			td{
+				border: 1px solid black;
+				text-align: center;
+				height: 30px;
+				line-height: 30px;
+				font-size: 18px;
+				font-family: 微软雅黑, microsoft yahei;
+			}
+			
+			thead td {
+				font-size: 20px;
+				font-weight: bold;
+			}
+			thead td:first-of-type{
+				width: 120px;
+			}
+			thead td:nth-of-type(2){
+				width: 190px;
+			}
+			thead td:nth-of-type(3){
+				width: 190px;
+			}
+			thead td:nth-of-type(4){
+				width: 190px;
+			}
+			thead td:nth-of-type(5){
+				width: 190px;
+			}
+			#bnt{
+				font-size: 18px;
+			}
+		</style>
+		<script type="text/javascript" src="jquery-1.11.2.js"></script>
+	</head>
+
+	<body>
+		<table border="0" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<td>序号</td>
+					<td>姓名</td>
+					<td>年龄</td>
+					<td>性别</td>
+					<td>操作</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>张三</td>
+					<td>18</td>
+					<td>男</td>
+					<td>
+						<input type="button" id="bnt" value="增加" />
+						<input type="button" id="bnt" value="修改" />
+						<input type="button" id="bnt" value="删除" />
+					</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>李四</td>
+					<td>18</td>
+					<td>男</td>
+					<td>
+						<input type="button" id="bnt" value="增加" />
+						<input type="button" id="bnt" value="修改" />
+						<input type="button" id="bnt" value="删除" />
+					</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>潘金莲</td>
+					<td>18</td>
+					<td>女</td>
+					<td>
+						<input type="button" id="bnt" value="增加" />
+						<input type="button" id="bnt" value="修改" />
+						<input type="button" id="bnt" value="删除" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<script type="text/javascript">
+		
+		(function table(){
+			//定义四个变量
+			var tdH1,tdH2,tdH3,tdH4;
+			return $("tbody").on("click", "input", function() {
+				//当前点击事件父元素中的td
+				var nowTd = $(this).parents("tr").children();
+
+				if($(this).val()=="删除"||$(this).val()=="取消"){
+					if(confirm("确定要删除？")==true){
+						$(this).parents("tr").remove();
+					}
+				}else if($(this).val()=="增加"){
+					tdH4= nowTd.eq(4).html();
+					$(this).parents("tr").after("<tr><td></td><td><input type='text'/></td><td><input type='text'/></td><td><input type='text'/></td><td><input type='button'  value='保存' /><input type='button' value='取消'/></td></tr>");
+				}else if($(this).val()=="修改"){
+					tdH1 = nowTd.eq(1).html();
+					tdH2= nowTd.eq(2).html();
+					tdH3= nowTd.eq(3).html();
+					tdH4= nowTd.eq(4).html();
+					nowTd.eq(1).html("<input type='text' value="+tdH1+">");
+					nowTd.eq(2).html("<input type='text' value="+tdH2+">");
+					nowTd.eq(3).html("<input type='text' value="+tdH3+">");
+					nowTd.eq(4).html("<input type='button' value='保存'><input type='button' value='撤销'>");
+					
+				}else if($(this).val()=="撤销"){
+						nowTd.eq(1).html(tdH1);
+						nowTd.eq(2).html(tdH2);
+						nowTd.eq(3).html(tdH3);
+						nowTd.eq(4).html(tdH4);
+				}else if($(this).val()=="保存"){
+					
+					console.log(nowTd.eq(1).first().val())
+						nowTd.eq(1).html(nowTd.eq(1).find("input").val());
+						nowTd.eq(2).html(nowTd.eq(2).find("input").val());
+						nowTd.eq(3).html(nowTd.eq(3).find("input").val());
+						nowTd.eq(4).html(tdH4);
+				}
+				//获取tbody下每行第一个td对象的数组
+				var myTr = $("tbody tr td:first-child");
+				//使用for循环覆盖当前td序号
+				for(var i=0 ; i<myTr.length;i++){
+					myTr.eq(i).html(i+1);
+				}
+			});		
+		})();
+		</script>
+	</body>
+
+</html>
